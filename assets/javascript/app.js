@@ -7,8 +7,8 @@
 4. [] Set onclick functions for userGuess from answers array
 5. [] Create conditions for answers or no answer (Time up game over)
 
-6. [] Add points for correct answers
-7. [] Add points for incorrect answers
+6. [x] Add points for correct answers
+7. [x] Add points for incorrect answers
 8. [] Add points for incomplete answers (if timeout is reached)
 9. [x] show score at the end of the game
 10.[x] reset button to start quiz over
@@ -49,17 +49,19 @@ $(document).ready(function() {
         'assets/images/Correct3.gif', 'assets/images/Correct4.gif'
     ];
 
-    var incorrectImageArray = ['assets/images/incorrect1.gif']
+    var incorrectImageArray = ['assets/images/incorrect1.gif','assets/images/incorrect2.gif',
+    'assets/images/incorrect3.gif','assets/images/incorrect4.gif',]
 
     console.log(jordanTrivia);
 
     //Global Variables
 
-    var time = 10; //Time to countdown per question
+    var time = 24; //Time to countdown per question
     var intervalID; //Interval
     var count = -1; //traverse through jordanTrivia object questions
     var correct = 0; //counter for correct responses
     var incorrect = 0; //counter for incorrect responses
+    var unanswered = 0;
     var userSelections //empty var for user selection
 
 
@@ -98,11 +100,10 @@ $(document).ready(function() {
 
         $('.timer').html('<h2>Time</h2> <p><h3>' + time + '</h3></p>');
 
-        if (time < 1) {
-
+        if (time === 0) {
+            unanswered++;
             clearInterval(intervalID);
             nextQuestion();
-
 
         }
 
@@ -126,33 +127,44 @@ $(document).ready(function() {
     function nextQuestion() {
 
         count++;
-        time = 10;
+        time = 24;
         intervalID = setInterval(countdown, 1000);
 
 
-        $('.question').html(jordanTrivia[count].question);
-        //$('.answer').html('<ul>' + jordanTrivia[count].options + '</ul>');
+        if (count < jordanTrivia.length) {
 
-        $('.answer').empty();
-        answerButtons();
+
+            $('.question').html(jordanTrivia[count].question);
+
+
+            $('.answer').empty();
+            answerButtons();
+
+        }
 
         //End of questions, show score, restart game with button
+        else if (count > (jordanTrivia.length - 1)) {
 
-        if (count === jordanTrivia[count].question.length) {
-
-            
-
+            $('.question').empty();
+            $('.answer').empty();
+            $('.timer').empty();
             clearInterval(intervalID);
+            time = 0;
+
+            function endGame() {
 
 
-            var gameOver = $('div', { class: 'col-md-12 finale' });
+                var gameOver = "<h1> Game Over! Here are the results:</h1>"
 
-            gameOver.append("<h1> Game Over! Here are the results:</h1>");
+                $('.question').html(gameOver);
 
-            var result = $('div', { class: 'col-md-12 results' });
+                var result = "<p> Correct answers:" + correct + "</p> <p> Incorrect answers: " + incorrect + "</p>" + "<p> Unanswered: " + unanswered + "</p>"
 
-            results.append("<p> Correct answers:" + correct + "</p> <p> Incorrect answers: " + incorrect + "</p>");
+                $('.answer').html(result);
 
+            }
+
+            endGame();
             createReset();
 
 
@@ -163,7 +175,7 @@ $(document).ready(function() {
 
 
 
-    //Creating radio buttons for multiple choice questions
+    //Creating buttons for multiple choice questions
 
     function answerButtons() {
 
@@ -186,10 +198,12 @@ $(document).ready(function() {
             userSelections = $(this).text();
             if (userSelections === jordanTrivia[count].answer) {
                 correct++;
+                showCorrectImage();
                 clearInterval(intervalID);
                 nextQuestion();
             } else {
                 incorrect++;
+                showIncorrectImage();
                 clearInterval(intervalID);
                 nextQuestion();
             }
@@ -203,14 +217,20 @@ $(document).ready(function() {
     function createReset() {
 
 
-        var reset = $(document.createElement('button', { class: 'reset-button' }));
+        var reset = $(document.createElement('button'));
+        reset.addClass('btn-lg btn-block');
+        reset.text('Try Again');
+        reset.appendTo('.answer');
 
-        reset.click(function() {
+        reset.on('click', function() {
 
 
             count = -1;
             correct = 0;
             incorrect = 0;
+            unanswered = 0;
+
+            reset.remove();
 
             nextQuestion();
 
@@ -219,7 +239,23 @@ $(document).ready(function() {
 
     }
 
+    function showCorrectImage() {
 
+        $(".image-holder").html("<img src=" + correctImageArray[count] + " width='400px'><p><h4>Correct!!! The answer is  " + jordanTrivia[count].answer + "</h4></p>");
+        setTimeout(removeImage, 4000);
+
+
+    }
+
+    function showIncorrectImage() {
+
+        $(".image-holder").html("<img src=" + incorrectImageArray[count] + " width='400px'><p><h4> Incorrect: The answer is  " + jordanTrivia[count].answer + "</h4></p>");
+        setTimeout(removeImage, 4000);
+    }
+
+    function removeImage () {
+    	$('.image-holder').empty();
+    }
 
 
 
