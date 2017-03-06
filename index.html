@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Michael Jordan Trivia</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <!-- Stylesheet for Trivia Game -->
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+</head>
+
+<body>
+    <audio id="like-mike" src="assets/audio.mp3" type="audio/mp3"></audio>
+    <div class="container-fluid">
+        <div class="jumbotron">
+            <h1>Michael Jordan Trivia</h1>
+        </div>
+        <div class = "container game">
+        <div class="col-md-6 col-md-offset-3 time-heading">
+            
+            <div class="col-md-6 col-md-offset-3 timer">
+            </div>
+        </div>
+        <br>
+        <div class="col-md-12 question">
+        </div>
+        <br>
+        <div class="btn-group-vertical col-md-12 answer">
+        	
+        	<ul id='answer'></ul>
+        </div>
+        </div>
+    </div>
+    <!-- jQuery Library 3.1.1 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <!-- Trivia App JavaScript -->
+    <script src="assets/javascript/app.js"></script>
+</body>
+
+</html>
